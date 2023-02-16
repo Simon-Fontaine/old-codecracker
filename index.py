@@ -2,29 +2,28 @@ from time import *
 from gpiozero import *
 from signal import pause
 
-
 print("Ready !")
 
 led = LED(21)
 btn1 = Button(20)
-btn2 = Button(16)
-btn3 = Button(12)
+
+compteur = 0
 
 def pressed1():
-  print('LED Eteinte')
-  led.off()
-
-def pressed2():
-  print('LED Allumée')
-  led.on()
-
-def pressed3():
-  print('LED clignote')
-  led.blink()
-
+  global compteur
+  if compteur == 0:
+    print('LED Eteinte')
+    led.off()
+  elif compteur == 1:
+    print('LED Allumée')
+    led.on()
+  elif compteur == 2:
+    print('LED clignote')
+    led.blink()
+  elif compteur == 3:
+    compteur = -1
+  compteur += 1
 
 btn1.when_pressed = pressed1
-btn2.when_pressed = pressed2
-btn3.when_pressed = pressed3
 
 pause()
