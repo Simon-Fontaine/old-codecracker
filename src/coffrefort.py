@@ -1,7 +1,10 @@
 from time import *
 from gpiozero import RotaryEncoder, RGBLED, Button
 from signal import pause
+import time
 import random
+
+startTime = time.time()
 
 rotor = RotaryEncoder(17, 27)
 button = Button(22)
@@ -29,14 +32,15 @@ def rotatedRight():
     if len(inputs) == len(code):
         led.color = (1, 1, 0.2)
         print("You have opened the safe !")
+    elif counter == code[index]:
+        led.color = (0, 1, 0)
     elif counter < (code[index] - 10):
         led.color = (1, 0, 0)
     elif counter > (code[index] + 10):
         led.color = (1, 0, 0)
-    elif counter == code[index]:
-        led.color = (0, 1, 0)
-    else :
+    else:
         led.color = (0, 0, 1)
+
     print("Current Value: ", counter)
 
 def rotatedLeft():
@@ -47,14 +51,15 @@ def rotatedLeft():
     if len(inputs) == len(code):
         led.color = (1, 1, 0.2)
         print("You have opened the safe !")
+    elif counter == code[index]:
+        led.color = (0, 1, 0)
     elif counter < (code[index] - 10):
         led.color = (1, 0, 0)
     elif counter > (code[index] + 10):
         led.color = (1, 0, 0)
-    elif counter == code[index]:
-        led.color = (0, 1, 0)
-    else :
+    else:
         led.color = (0, 0, 1)
+
     print("Current Value: ", counter)
 
 def confirm():
@@ -76,8 +81,16 @@ def confirm():
         if len(inputs) == len(code):
             led.color = (1, 1, 0.2)
             print("You have opened the safe !")
+            endTime = time.time()
+            print("Time: ", endTime - startTime)
     elif counter != code[index]:
-        led.color = (1, 0, 0)
+        if counter < (code[index] - 10):
+            led.color = (1, 0, 0)
+        elif counter > (code[index] + 10):
+            led.color = (1, 0, 0)
+        else:
+            led.color = (0, 0, 1)
+
         print("Your Input: ", counter)
         print("Incorrect Guess !\nTry again !")
     

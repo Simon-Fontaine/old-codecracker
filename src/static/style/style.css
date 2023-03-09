@@ -1,0 +1,120 @@
+* {
+  margin: 0;
+}
+@font-face {
+  font-family: "TiltWarp";
+  src: url("font/font.ttf") format("opentype");
+}
+@keyframes ouverture {
+  0% {
+    opacity: 100;
+    height: 50vh;
+    margin-bottom: 0;
+  }
+  50% {
+    opacity: 100;
+    height: 0vh;
+    margin-bottom: 50vh;
+  }
+  100% {
+    opacity: 0;
+    height: 0vh;
+    margin-bottom: 50vh;
+  }
+}
+@keyframes ouvertureBot {
+  0% {
+    opacity: 100;
+  }
+  50% {
+    opacity: 100;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+body {
+  width: 100vw;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url(image/wood.png);
+  background-repeat: repeat;
+  background-blend-mode: darken;
+}
+main {
+  height: 100vh;
+  background-image: url(image/congratulations.gif);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position-y: center;
+  background-position-x: center;
+}
+ul.lock {
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  background-color: grey;
+  padding: 2vh;
+  margin-bottom: -18vh;
+  z-index: 5;
+}
+.top-chess {
+  position: relative;
+  height: 50vh;
+  width: 100vw;
+  background-image: url(image/wood.png);
+  background-repeat: repeat-x;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  z-index: 4;
+}
+.top-chess.animated {
+  animation: ouverture 4s forwards;
+}
+.sepa {
+  position: absolute;
+  background-color: grey;
+  height: 2vh;
+  width: 100vw;
+}
+.bot-chess {
+  height: 50vh;
+  width: 100vw;
+  background-image: url(image/wood.png);
+  background-repeat: repeat-x;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 0;
+}
+.bot-chess.animated {
+  animation: ouvertureBot 4s forwards;
+}
+li {
+  background-color: red;
+  width: 30vh;
+  height: 30vh;
+  border: 1px solid black;
+}
+li.activated {
+  background-color: rgb(49, 228, 49);
+  width: 30vh;
+  height: 30vh;
+  border: 1px solid black;
+}
+footer {
+  height: 20vh;
+  background-color: #343434;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: center;
+  padding: 3vh;
+  font-size: 0.7em;
+}
+h1 {
+  font-family: "TiltWarp", serif;
+  font-weight: bolder;
+}
