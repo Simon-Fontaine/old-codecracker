@@ -1,5 +1,6 @@
 * {
   margin: 0;
+  box-sizing: border-box;
 }
 @font-face {
   font-family: "TiltWarp";
@@ -25,12 +26,15 @@
 @keyframes ouvertureBot {
   0% {
     opacity: 100;
+    margin-top: 0vh;
   }
   50% {
     opacity: 100;
+    margin-top: 100vh;
   }
   100% {
     opacity: 0;
+    margin-top: 100vh;
   }
 }
 
@@ -70,7 +74,7 @@ ul.lock {
   z-index: 4;
 }
 .top-chess.animated {
-  animation: ouverture 4s forwards;
+  animation: ouverture 2s forwards;
 }
 .sepa {
   position: absolute;
@@ -89,7 +93,7 @@ ul.lock {
   z-index: 0;
 }
 .bot-chess.animated {
-  animation: ouvertureBot 4s forwards;
+  animation: ouvertureBot 2s forwards;
 }
 li {
   background-color: red;
@@ -117,4 +121,12 @@ footer {
 h1 {
   font-family: "TiltWarp", serif;
   font-weight: bolder;
+}
+.underChest {
+  position: absolute;
+  z-index: -1;
+  top: 48vh;
+  left: 5vw;
+  color: white;
+  font-size: 4vh;
 }
