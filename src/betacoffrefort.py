@@ -10,7 +10,6 @@ maxsteps = 30
 inputs = []
 index = 0
 
-
 # Couleurs
 class bcolors:
     HEADER = '\033[95m'
@@ -54,7 +53,6 @@ Essaie de trouver {bcolors.BOLD}4{bcolors.ENDC} nombres entre {bcolors.UNDERLINE
 
 {bcolors.UNDERLINE}{bcolors.BOLD}Ton chrono commence maintenant !{bcolors.ENDC}
 """)
-
 
 # Début du chrono
 st = time.time()
