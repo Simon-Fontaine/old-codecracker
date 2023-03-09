@@ -23,7 +23,9 @@ print("Ready ?\n\nTry to find numbers between -30 and 30 !\nThere are 4 numbers 
 
 def rotatedRight():
     global counter
-    counter += 1
+    if counter < 30:
+        counter += 1
+
     if len(inputs) == len(code):
         led.color = (1, 1, 0.2)
         print("You have opened the safe !")
@@ -39,7 +41,9 @@ def rotatedRight():
 
 def rotatedLeft():
     global counter
-    counter -= 1
+    if counter > -30:
+        counter -= 1
+
     if len(inputs) == len(code):
         led.color = (1, 1, 0.2)
         print("You have opened the safe !")
