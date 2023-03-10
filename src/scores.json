@@ -14,19 +14,39 @@
     },
     {
       "name": "Simon",
-      "time": "29.81"
+      "time": "15.05"
+    },
+    {
+      "name": "Echo",
+      "time": "13.76"
     },
     {
       "name": "Bistou",
-      "time": "29.26"
+      "time": "9.59"
     },
     {
-      "name": "Bistou",
-      "time": "18.99"
+      "name": "Echo",
+      "time": "11.08"
     },
     {
-      "name": "Bastien",
-      "time": "15.96"
+      "name": "Simon",
+      "time": "13.91"
+    },
+    {
+      "name": "Simon",
+      "time": "10.40"
+    },
+    {
+      "name": "Echo",
+      "time": "15.85"
+    },
+    {
+      "name": "Echo",
+      "time": "11.01"
+    },
+    {
+      "name": "Echo",
+      "time": "11.17"
     }
   ]
 }

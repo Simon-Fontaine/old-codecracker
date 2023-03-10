@@ -5,19 +5,17 @@ import random
 import json
 import time
 
+# from flask import Flask
 
-from flask import Flask
+# app = Flask(__name__)
 
-app = Flask(__name__)
+# @app.route('/')
+# def index():
+#     return '<h1>Bienvenue sur la page principale</h1>'
 
-@app.route('/')
-def index():
-    return '<h1>Bienvenue sur la page principale</h1>'
-
-
-@app.route('/hello')
-def hello():
-    return 'Vous voici sur la page <b>hello</b>'
+# @app.route('/hello')
+# def hello():
+#     return 'Vous voici sur la page <b>hello</b>'
 
 # Variables
 code = [0, 0, 0, 0]
@@ -90,6 +88,9 @@ def ledColor(compteur):
   else:
     led.color = ledcolors.BLUE
 
+startCompteir = rotor.value * maxsteps
+ledColor(startCompteir)
+
 def rotated():
   global index
   global code
@@ -126,14 +127,11 @@ def confirm():
 
       write_json(newdata)
 
-      # Ouvrir le fichier JSON
       with open('scores.json') as f:
           data = json.load(f)
 
-      # Trier les temps par ordre croissant
       sorted_times = sorted(data['players'], key=lambda k: float(k['time']))
 
-      # Afficher les 3 meilleurs temps
       print(f"\n{bcolors.OKCYAN}{bcolors.BOLD}Les 3 meilleurs chronos sont:{bcolors.ENDC}")
       for i in range(3):
           player = sorted_times[i]
@@ -149,4 +147,6 @@ def confirm():
 rotor.when_rotated = rotated
 button.when_pressed = confirm
 
-app.run(host='0.0.0.0', port=600)
+pause()
+
+# app.run(host='0.0.0.0', port=600)
