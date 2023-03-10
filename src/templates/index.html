@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projet Transversal</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename = 'style.css') }}"
+    />
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename = 'main.js') }}"
+    ></script>
+  </head>
+  <body onload="bootup();">
+    <main>
+      <div class="under-chest">
+        <div class="col">
+          <p>Timer : <span class="time">0</span> s</p>
+          <p>vous êtes en <span class="placement"></span>ère position</p>
+          <p>Record actuel : <span class="record"></span></p>
+          <div class="button-ligne">
+            <button class="restart">restart ?</button>
+            <button class="reset">réinitialiser les scores</button>
+          </div>
+          <p class="hidden texte-reset">
+            Les scores ont été réinitialisés (╯‵□′)╯︵┻━┻
+          </p>
+        </div>
+        <div class="col">
+          <table>
+            <thead>
+              <tr>
+                <td>position</td>
+                <td>Temps</td>
+              </tr>
+            </thead>
+            <tbody class="table-data"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="top-chest">
+        <ul class="lock">
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+        <div class="sepa"></div>
+      </div>
+      <div class="bot-chest"></div>
+    </main>
+    <footer>
+      <h1>Projet transversal</h1>
+      <h2>Simon Fontaine, Timothy Truong & Bastien Patureau</h2>
+    </footer>
+  </body>
+</html>
