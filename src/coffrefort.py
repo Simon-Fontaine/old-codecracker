@@ -1,104 +1,152 @@
-from time import *
 from gpiozero import RotaryEncoder, RGBLED, Button
 from signal import pause
-import time
+from time import *
 import random
+import json
+import time
 
-startTime = time.time()
 
-rotor = RotaryEncoder(17, 27)
-button = Button(22)
-led = RGBLED(red=10, green=9, blue=11)
-led.color = (1, 0, 0)
+from flask import Flask
 
-counter = 0
+app = Flask(__name__)
 
+@app.route('/')
+def index():
+    return '<h1>Bienvenue sur la page principale</h1>'
+
+
+@app.route('/hello')
+def hello():
+    return 'Vous voici sur la page <b>hello</b>'
+
+# Variables
 code = [0, 0, 0, 0]
+maxsteps = 30
 inputs = []
 index = 0
 
+# Couleurs
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+class ledcolors:
+    YELLOW = (1, 1, 0.2)
+    GREEN = (0, 1, 0) 
+    BLUE = (0, 0, 1)
+    RED = (1, 0, 0)
+    OFF = (0, 0, 0)
+
+# GPIO setup
+rotor = RotaryEncoder(17, 27, max_steps=maxsteps)
+led = RGBLED(red=10, green=9, blue=11)
+button = Button(22)
+
+# Génération du code
 for i in range(len(code)):
-    code[i] = random.randint(-30,30)
+    code[i] = random.randint(-maxsteps,maxsteps)
 
-print("Code: ", code)
+# Initialisation de la partie
+username = input(f"\n{bcolors.HEADER}{bcolors.BOLD}Entrez votre nom d'utilisateur:{bcolors.ENDC}\n")
 
-print("Ready ?\n\nTry to find numbers between -30 and 30 !\nThere are 4 numbers to find !\n\nColors:\nGreen: Correct number\nRed: Wrong number\nBlue: Wrong number but close to the correct one\nYellow: You have opened the safe !\n\n")
+print(f"""
+{bcolors.OKCYAN}{bcolors.BOLD}Prêt {username}?{bcolors.ENDC}
+Essaiez de trouver {bcolors.BOLD}4{bcolors.ENDC} nombres entre {bcolors.UNDERLINE}-30 et 30{bcolors.ENDC} !
 
-def rotatedRight():
-    global counter
-    if counter < 30:
-        counter += 1
+{bcolors.OKCYAN}{bcolors.BOLD}Couleurs:{bcolors.ENDC}
+{bcolors.OKGREEN}Vert:{bcolors.ENDC} Nombre correcte
+{bcolors.FAIL}Rouge:{bcolors.ENDC} Nombre incorrecte
+{bcolors.OKBLUE}Bleu:{bcolors.ENDC} Mauvais nombre mais proche du bon
+{bcolors.WARNING}Jaune:{bcolors.ENDC} Vous avez cracké le coffre-fort
+""")
 
-    if len(inputs) == len(code):
-        led.color = (1, 1, 0.2)
-        print("You have opened the safe !")
-    elif counter == code[index]:
-        led.color = (0, 1, 0)
-    elif counter < (code[index] - 10):
-        led.color = (1, 0, 0)
-    elif counter > (code[index] + 10):
-        led.color = (1, 0, 0)
-    else:
-        led.color = (0, 0, 1)
+input(f"\n{bcolors.HEADER}Appuiez sur ENTER pour démarrer votre chrono...{bcolors.ENDC}\n")
 
-    print("Current Value: ", counter)
+print(f"\n{bcolors.WARNING}Le chrono a démarré !{bcolors.ENDC}\n")
 
-def rotatedLeft():
-    global counter
-    if counter > -30:
-        counter -= 1
+# Début du chrono
+st = time.time()
 
-    if len(inputs) == len(code):
-        led.color = (1, 1, 0.2)
-        print("You have opened the safe !")
-    elif counter == code[index]:
-        led.color = (0, 1, 0)
-    elif counter < (code[index] - 10):
-        led.color = (1, 0, 0)
-    elif counter > (code[index] + 10):
-        led.color = (1, 0, 0)
-    else:
-        led.color = (0, 0, 1)
+# Fonctions
+def ledColor(compteur):
+  global index
+  global code
 
-    print("Current Value: ", counter)
+  if compteur == code[index]:
+    led.color = ledcolors.GREEN
+  elif abs(compteur) == maxsteps:
+    led.color = ledcolors.OFF
+  elif compteur < (code[index] - 10):
+    led.color = ledcolors.RED
+  elif compteur > (code[index] + 10):
+    led.color = ledcolors.RED
+  else:
+    led.color = ledcolors.BLUE
+
+def rotated():
+  global index
+  global code
+
+  compteur = rotor.value * maxsteps
+
+  ledColor(compteur)
+
+  print(f"Valeur actuelle: {compteur}")
 
 def confirm():
-    global index
-    global counter
-    global code
-    
+  global index
+  global st
+  global username
+
+  compteur = rotor.value * maxsteps
+
+  if compteur == code[index]:
+    inputs.append(compteur)
+    index += 1
+    print(f"\n{bcolors.OKGREEN}{compteur} est un nombre correcte !{bcolors.ENDC}\n")
     if len(inputs) == len(code):
-        led.color = (1, 1, 0.2)
-        print("You have opened the safe !")
-    elif counter == code[index]:
-        led.color = (1, 0, 0)
-        print("Your Input: ", counter)
-        print("Correct Guess !")
-        inputs.append(counter)
-        print('Your inputs: ', inputs)
-        index += 1
+      newtime = '%.2f' % (time.time() - st)
+      print(f"{bcolors.OKGREEN}Vous avez ouvert le coffre-fort !{bcolors.ENDC}\n{bcolors.OKCYAN}Combinaison:{bcolors.ENDC} {code}\n{bcolors.WARNING}Temps: {bcolors.FAIL}{bcolors.BOLD}{newtime}{bcolors.ENDC}{bcolors.WARNING} secondes{bcolors.ENDC}")
+      
+      newdata = {'name': username, 'time': newtime}
 
-        if len(inputs) == len(code):
-            led.color = (1, 1, 0.2)
-            print("You have opened the safe !")
-            endTime = time.time()
-            print("Time: ", endTime - startTime)
-    elif counter != code[index]:
-        if counter < (code[index] - 10):
-            led.color = (1, 0, 0)
-        elif counter > (code[index] + 10):
-            led.color = (1, 0, 0)
-        else:
-            led.color = (0, 0, 1)
+      def write_json(new_data, filename='scores.json'):
+        with open(filename,'r+') as file:
+            file_data = json.load(file)
+            file_data["players"].append(new_data)
+            file.seek(0)
+            json.dump(file_data, file, indent = 2)
 
-        print("Your Input: ", counter)
-        print("Incorrect Guess !\nTry again !")
-    
+      write_json(newdata)
 
-rotor.when_rotated_clockwise = rotatedLeft
+      # Ouvrir le fichier JSON
+      with open('scores.json') as f:
+          data = json.load(f)
 
-rotor.when_rotated_counter_clockwise = rotatedRight
+      # Trier les temps par ordre croissant
+      sorted_times = sorted(data['players'], key=lambda k: float(k['time']))
 
+      # Afficher les 3 meilleurs temps
+      print(f"\n{bcolors.OKCYAN}{bcolors.BOLD}Les 3 meilleurs chronos sont:{bcolors.ENDC}")
+      for i in range(3):
+          player = sorted_times[i]
+          print(f"{i+1}. {player['name']} - {player['time']} secondes")
+
+      exit()
+  elif compteur != code[index]:
+    print(f"\n{bcolors.FAIL}{compteur} est un nombre incorrecte !{bcolors.ENDC}\n")
+  
+  ledColor(compteur)
+
+# Event Listener
+rotor.when_rotated = rotated
 button.when_pressed = confirm
 
-pause()
+app.run(host='0.0.0.0', port=600)
