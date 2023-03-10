@@ -1,13 +1,16 @@
 function bootup() {
   let score = [];
+
   if (localStorage.getItem("score")) {
     score = localStorage.getItem("score");
     score = JSON.parse(score);
   }
+
   let foundNumber = 0;
   let intervalId;
   let tempsAnimation = 2000;
   let flagAnimation = false;
+
   const timer = document.querySelector(".time");
   const topChest = document.querySelector(".top-chest");
   const botChest = document.querySelector(".bot-chest");
@@ -19,6 +22,7 @@ function bootup() {
   const resetButton = document.querySelector(".reset");
   const texteReset = document.querySelector(".texte-reset");
   const tableData = document.querySelector(".table-data");
+
   function openChest() {
     topChest.classList.remove("restart");
     botChest.classList.remove("restart");
@@ -49,6 +53,7 @@ function bootup() {
       })
     );
   }
+
   function buildTable(data) {
     tableData.innerHTML = "";
     for (let index = 0; index < 10; index++) {
@@ -61,6 +66,7 @@ function bootup() {
       }`;
     }
   }
+
   function validateNumber() {
     if (foundNumber < 4) {
       lock.children[foundNumber].classList.add("activated");
@@ -70,16 +76,20 @@ function bootup() {
       }
     }
   }
+
   let mesuredtime = 0;
+
   function myTimer() {
     mesuredtime += 1;
   }
+
   function start() {
     intervalId = setInterval(myTimer, 10);
     for (const child of lock.children) {
       child.classList.remove("activated");
     }
   }
+
   function restart() {
     foundNumber = 0;
     mesuredtime = 0;
@@ -98,6 +108,7 @@ function bootup() {
       child.classList.remove("activated");
     }
   }
+
   function reset() {
     score = [];
     localStorage.clear("score");
@@ -107,17 +118,20 @@ function bootup() {
       texteReset.classList.add("hidden");
     }, 3000);
   }
+
   lock.addEventListener("click", (e) => {
     e.preventDefault();
     if (flagAnimation === false) {
       validateNumber();
     }
   });
+
   restartButton.addEventListener("click", (e) => {
     console.log("restart");
     e.preventDefault();
     restart();
   });
+
   resetButton.addEventListener("click", (e) => {
     e.preventDefault();
     reset();

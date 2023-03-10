@@ -31,6 +31,7 @@
     z-index: -10;
   }
 }
+
 @keyframes fermeture {
   0% {
     opacity: 0;
@@ -55,6 +56,7 @@
     z-index: 1;
   }
 }
+
 @keyframes ouvertureBot {
   0% {
     opacity: 100;
@@ -75,6 +77,7 @@
     z-index: -10;
   }
 }
+
 @keyframes fermetureBot {
   0% {
     opacity: 0;
@@ -104,9 +107,11 @@ body {
   background-repeat: repeat;
   background-blend-mode: darken;
 }
+
 main {
   height: 100%;
 }
+
 ul.lock {
   list-style: none;
   display: flex;
@@ -116,6 +121,7 @@ ul.lock {
   margin-bottom: -18vh;
   z-index: 5;
 }
+
 .top-chest {
   position: relative;
   height: 50vh;
@@ -127,18 +133,22 @@ ul.lock {
   justify-content: center;
   z-index: 4;
 }
+
 .top-chest.opening {
   animation: ouverture var(--tempsAnimation) forwards;
 }
+
 .top-chest.restart {
   animation: fermeture var(--tempsAnimation) forwards;
 }
+
 .sepa {
   position: absolute;
   background-color: grey;
   height: 2vh;
   width: 100%;
 }
+
 .bot-chest {
   position: relative;
   height: 50vh;
@@ -150,24 +160,29 @@ ul.lock {
   justify-content: center;
   z-index: 0;
 }
+
 .bot-chest.opening {
   animation: ouvertureBot var(--tempsAnimation) forwards;
 }
+
 .bot-chest.restart {
   animation: fermetureBot var(--tempsAnimation) forwards;
 }
+
 li {
   background-color: red;
   width: 30vh;
   height: 30vh;
   border: 1px solid black;
 }
+
 li.activated {
   background-color: rgb(49, 228, 49);
   width: 30vh;
   height: 30vh;
   border: 1px solid black;
 }
+
 footer {
   height: 20vh;
   background-color: #343434;
@@ -179,6 +194,7 @@ footer {
   padding: 3vh;
   font-size: 0.7em;
 }
+
 .under-chest {
   position: absolute;
   display: flex;
@@ -193,29 +209,35 @@ footer {
   color: white;
   font-size: 4vh;
 }
+
 table {
   border: 1px solid white;
   border-collapse: collapse;
 }
+
 td {
   border: 1px solid white;
   padding: 5px;
 }
+
 .button-ligne {
   display: flex;
   gap: 5vw;
 }
+
 button {
   border: 0;
   padding: 5px;
   box-shadow: none;
   border-radius: 5px;
 }
+
 button:disabled {
   margin: 0;
   color: rgb(126, 126, 126);
   background-color: rgb(126, 126, 126);
 }
+
 .hidden {
   opacity: 0;
 }

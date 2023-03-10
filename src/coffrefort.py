@@ -1,21 +1,10 @@
 from gpiozero import RotaryEncoder, RGBLED, Button
 from signal import pause
 from time import *
+from art import tprint
 import random
 import json
 import time
-
-# from flask import Flask
-
-# app = Flask(__name__)
-
-# @app.route('/')
-# def index():
-#     return '<h1>Bienvenue sur la page principale</h1>'
-
-# @app.route('/hello')
-# def hello():
-#     return 'Vous voici sur la page <b>hello</b>'
 
 # Variables
 code = [0, 0, 0, 0]
@@ -52,6 +41,8 @@ for i in range(len(code)):
     code[i] = random.randint(-maxsteps,maxsteps)
 
 # Initialisation de la partie
+tprint("Code Cracker","3d_diagonal")
+
 username = input(f"\n{bcolors.HEADER}{bcolors.BOLD}Entrez votre nom d'utilisateur:{bcolors.ENDC}\n")
 
 print(f"""
@@ -147,6 +138,5 @@ def confirm():
 rotor.when_rotated = rotated
 button.when_pressed = confirm
 
+# Petite pause
 pause()
-
-# app.run(host='0.0.0.0', port=600)
