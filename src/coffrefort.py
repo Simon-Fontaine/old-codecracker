@@ -43,10 +43,10 @@ for i in range(len(code)):
 # Initialisation de la partie
 tprint("Code Cracker","3d_diagonal")
 
-username = input(f"\n{bcolors.HEADER}{bcolors.BOLD}Entrez votre nom d'utilisateur:{bcolors.ENDC}\n")
+username = input(f"\n{bcolors.HEADER}{bcolors.BOLD}>> Entrez votre nom d'utilisateur:{bcolors.ENDC}\n")
 
 print(f"""
-{bcolors.OKCYAN}{bcolors.BOLD}Prêt {username}?{bcolors.ENDC}
+{bcolors.OKCYAN}{bcolors.BOLD}Prêt(e) {username}?{bcolors.ENDC}
 Essaiez de trouver {bcolors.BOLD}4{bcolors.ENDC} nombres entre {bcolors.UNDERLINE}-30 et 30{bcolors.ENDC} !
 
 {bcolors.OKCYAN}{bcolors.BOLD}Couleurs:{bcolors.ENDC}
@@ -56,7 +56,7 @@ Essaiez de trouver {bcolors.BOLD}4{bcolors.ENDC} nombres entre {bcolors.UNDERLIN
 {bcolors.WARNING}Jaune:{bcolors.ENDC} Vous avez cracké le coffre-fort
 """)
 
-input(f"\n{bcolors.HEADER}Appuiez sur ENTER pour démarrer votre chrono...{bcolors.ENDC}\n")
+input(f"\n{bcolors.HEADER}>> Appuiez sur ENTER pour démarrer votre chrono...{bcolors.ENDC}\n")
 
 print(f"\n{bcolors.WARNING}Le chrono a démarré !{bcolors.ENDC}\n")
 
@@ -105,28 +105,45 @@ def confirm():
     print(f"\n{bcolors.OKGREEN}{compteur} est un nombre correcte !{bcolors.ENDC}\n")
     if len(inputs) == len(code):
       newtime = '%.2f' % (time.time() - st)
-      print(f"{bcolors.OKGREEN}Vous avez ouvert le coffre-fort !{bcolors.ENDC}\n{bcolors.OKCYAN}Combinaison:{bcolors.ENDC} {code}\n{bcolors.WARNING}Temps: {bcolors.FAIL}{bcolors.BOLD}{newtime}{bcolors.ENDC}{bcolors.WARNING} secondes{bcolors.ENDC}")
+      newtime = float(newtime)
+
+      print(f"{bcolors.OKGREEN}Vous avez ouvert le coffre-fort !{bcolors.ENDC}\n{bcolors.OKCYAN}Combinaison:{bcolors.ENDC} {code}")
       
-      newdata = {'name': username, 'time': newtime}
+      new_player = {'name': f'{username}', 'time': newtime}
 
-      def write_json(new_data, filename='scores.json'):
-        with open(filename,'r+') as file:
-            file_data = json.load(file)
-            file_data["players"].append(new_data)
-            file.seek(0)
-            json.dump(file_data, file, indent = 2)
+      with open('scores.json') as file:
+          olddata = json.load(file)
 
-      write_json(newdata)
+      old_sorted_times = sorted(olddata['players'], key=lambda k: float(k['time']))
 
-      with open('scores.json') as f:
-          data = json.load(f)
+      if newtime < old_sorted_times[0]['time']:
+        print(f"{bcolors.WARNING}Temps: {bcolors.FAIL}{bcolors.BOLD}{newtime}{bcolors.ENDC}{bcolors.WARNING} secondes{bcolors.ENDC} {bcolors.OKCYAN}({bcolors.OKGREEN}Nouveau Record !{bcolors.OKCYAN}){bcolors.ENDC}")
+      elif newtime < old_sorted_times[1]['time']:
+        print(f"{bcolors.WARNING}Temps: {bcolors.FAIL}{bcolors.BOLD}{newtime}{bcolors.ENDC}{bcolors.WARNING} secondes{bcolors.ENDC} {bcolors.OKCYAN}({bcolors.OKGREEN}Nouveau Top 2 !{bcolors.OKCYAN}){bcolors.ENDC}")
+      elif newtime < old_sorted_times[2]['time']:
+        print(f"{bcolors.WARNING}Temps: {bcolors.FAIL}{bcolors.BOLD}{newtime}{bcolors.ENDC}{bcolors.WARNING} secondes{bcolors.ENDC} {bcolors.OKCYAN}({bcolors.OKGREEN}Nouveau Top 3 !{bcolors.OKCYAN}){bcolors.ENDC}")
+      else:
+        print(f"{bcolors.WARNING}Temps: {bcolors.FAIL}{bcolors.BOLD}{newtime}{bcolors.ENDC}{bcolors.WARNING} secondes{bcolors.ENDC}")
 
-      sorted_times = sorted(data['players'], key=lambda k: float(k['time']))
+      with open('scores.json', 'r') as file:
+          data = json.load(file)  
 
-      print(f"\n{bcolors.OKCYAN}{bcolors.BOLD}Les 3 meilleurs chronos sont:{bcolors.ENDC}")
-      for i in range(3):
-          player = sorted_times[i]
-          print(f"{i+1}. {player['name']} - {player['time']} secondes")
+      data["players"].append(new_player)
+
+      with open('scores.json', 'w') as file:
+        json.dump(data, file)
+
+      with open('scores.json') as file:
+          newdata = json.load(file)
+
+      sorted_times = sorted(newdata['players'], key=lambda k: float(k['time']))
+
+      print(f"\n{bcolors.HEADER}{bcolors.BOLD}Les 5 meilleurs chronos sont:{bcolors.ENDC}")
+      print(f"1. {bcolors.OKGREEN}{sorted_times[0]['name']}{bcolors.ENDC} - {sorted_times[0]['time']} secondes")
+      print(f"2. {bcolors.WARNING}{sorted_times[1]['name']}{bcolors.ENDC} - {sorted_times[1]['time']} secondes")
+      print(f"3. {bcolors.FAIL}{sorted_times[2]['name']}{bcolors.ENDC} - {sorted_times[2]['time']} secondes")
+      print(f"4. {sorted_times[3]['name']} - {sorted_times[3]['time']} secondes")
+      print(f"5. {sorted_times[4]['name']} - {sorted_times[4]['time']} secondes")
 
       exit()
   elif compteur != code[index]:
